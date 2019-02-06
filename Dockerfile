@@ -49,5 +49,5 @@ VOLUME /opt/shoutcast/control
 EXPOSE 8000/tcp
 EXPOSE 8001/tcp
 
-#ENTRYPOINT /opt/shoutcast/sc_serv
-CMD ['/opt/shoutcast/sc_serv', 'config/sc_serv.conf']
+ENTRYPOINT /opt/shoutcast/sc_serv
+CMD config/sc_serv.conf
