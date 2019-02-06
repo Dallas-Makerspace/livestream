@@ -1,0 +1,139 @@
+---
+version: '3.4'
+
+
+x-timezone: &default_timezone
+  TZ: "America/Chicago"
+
+x-network: &default_network
+  dns: '1.1.1.1'
+  dns_search: 'dapla.net'
+  networks:
+    - public
+
+x-proxy-env: &default_proxy
+  - http_proxy="http://proxy.local:8118"
+  - https_proxy="https://proxy.local:8118"
+  - socks_proxy="proxy.local:9051"
+  - no_proxy="127.0.0.1,localhost,.localdomain,.local"
+  - HTTP_PROXY="http://proxy.local:8118"
+  - HTTPS_PROXY="https://proxy.local:8118"
+  - SOCKS_PROXY="proxy.local:9051"
+  - NO_PROXY="127.0.0.1,localhost,.localdomain,.local"
+
+x-logging: &default_logging
+  driver: 'syslog'
+  options:
+    syslog-address: 'udp://telegraf.local:6514'
+
+x-deployment: &default_deployment
+  restart_policy:
+    condition: on-failure
+  mode: replicated
+  replicas: 1
+
+x-platform-enable: &enable_paas
+  com.centurylinklabs.watchtower.enable: "true"
+  traefik.frontend.priority: "5"
+  traefik.frontend.entryPoints: "http, https"
+  traefik.docker.network: "public"
+  traefik.enable: "true"
+  traefik.default.protocol: "http"
+  orbiter: "true"
+  orbiter.up: "3"
+  orbiter.down: "1"
+
+x-platform-disable: &disable_paas
+  traefik.enable: "false"
+  orbiter: "false"
+
+services:
+
+  streaming:
+    image: ${IMAGE}:latest
+    hostname: "${VIRTUAL_HOST}"
+    ports:
+      - "8000/tcp"
+      - "8001/tcp"
+    configs:
+      - source: config/sc_serv.conf
+        target: /opt/shoutcast/config/sc_serv.conf
+        uid: "0"
+        gid: "0"
+        mode: 0644
+    << : *default_network
+    volumes:
+      - shoutcast-control:/opt/shoutcast/control
+      - shoutcast-config:/opt/shoutcast/config
+    deploy:
+      << : *default_deployment
+      labels:
+        << : *enable_paas
+        traefik.enable: "true"
+        traefik.port: "8000"
+        traefik.frontend.rule: "Host:${VIRTUAL_HOST}"
+        traefik.backend: "whipthatllama"
+
+  webfsoauthproxy:
+    image: a5huynh/oauth2_proxy:latest
+    networks:
+      - public
+      - internal
+    ports:
+      - "4180/tcp"
+    command: |
+      --cookie-secure=false
+      --cookie-secret=f2e54609af65a74c4c930cbb4524f954090c5a6e9b644ba5716661280455ba88
+      --client-id=31c9766d69991dc09239
+      --client-secret=65f39cb33c41080fe3d8cbe510e541f46dcab61b
+      --github-org="Daplanet"
+      --provider=github
+      --upstream=http://webfs:8043/
+      --http-address=0.0.0.0:4180
+      --email-domain="*"
+      --redirect-url=https://files.local/oauth2/callback
+    deploy:
+      << : *default_deployment
+      labels:
+        << : *enable_paas
+        traefik.enable: "true"
+        traefik.port: "4180"
+        traefik.frontend.rule: "Host:files.local"
+        traefik.backend: "torrent"
+        #traefik.frontend.auth.forward.address: "https://dallasmakerspace.okta.com/"
+        #traefik.frontend.auth.forward.trustForwardHeader: "true"
+    << : *default_network
+
+  webfs:
+    image: pierrezemb/gostatic:latest
+    volumes:
+      - transmission-downloads:/srv/http:ro
+    << : *default_network
+    hostname: "files.local"
+    ports:
+      - "8043"
+    environment:
+      << : *default_timezone
+    deploy:
+      << : *default_deployment
+      labels:
+        << : *enable_paas
+
+configs:
+
+  settings.json:
+    file: "./config/settings.json"
+
+networks:
+
+  public:
+    external:
+      name: public
+
+volumes:
+
+    shoutcast-control: {}
+    shoutcast-config: {}
+
+...
+# vim: set sts=2 ts=2 sw=2 ai et list number :
