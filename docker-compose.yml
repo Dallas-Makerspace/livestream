@@ -70,9 +70,13 @@ services:
       labels:
         << : *enable_paas
         traefik.enable: "true"
-        traefik.port: "8000"
-        traefik.frontend.rule: "Host:${VIRTUAL_HOST}"
-        traefik.backend: "whipthatllama"
+        traefik.listener.port: "8000"
+        traefik.listener.frontend.rule: "Host:${VIRTUAL_HOST}; Path:/radio"
+        traefik.listener.frontend.priority: 10
+        traefik.streamer.port: "8001"
+        traefik.streamer.frontend.rule: "Host:${VIRTUAL_HOST}; Path:/dj"
+        traefik.streamer.frontend.priority: 10
+
 
   webfsoauthproxy:
     image: a5huynh/oauth2_proxy:latest
