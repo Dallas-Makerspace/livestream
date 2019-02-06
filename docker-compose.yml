@@ -107,7 +107,7 @@ services:
   webfs:
     image: pierrezemb/gostatic:latest
     volumes:
-      - transmission-downloads:/srv/http:ro
+      - shoutcast-control:/srv/http:ro
     << : *default_network
     hostname: "files.local"
     ports:
