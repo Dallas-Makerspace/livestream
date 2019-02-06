@@ -56,7 +56,7 @@ services:
       - "8000/tcp"
       - "8001/tcp"
     configs:
-      - source: config/sc_serv.conf
+      - source: sc_serv.conf
         target: /opt/shoutcast/config/sc_serv.conf
         uid: "0"
         gid: "0"
@@ -121,8 +121,8 @@ services:
 
 configs:
 
-  settings.json:
-    file: "./config/settings.json"
+  sc_serv.conf:
+    file: "./config/sc_serv.conf"
 
 networks:
 
