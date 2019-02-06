@@ -21,6 +21,7 @@ audio_output {
 
 
 bind_to_address "0.0.0.0"
+```
 
 
 from here one can just use mpc to connect to the above mpd server for control of the player and have shoutcast configured for:
@@ -31,7 +32,6 @@ from here one can just use mpc to connect to the above mpd server for control of
 | /stream | Fallback stream for music ( mpd on the cluster)  | 
 | /motd | Final Fallback stream for emergancy notices ( test.mp3 )  | 
 
-```
 ## Action shots
 
 https://www.youtube.com/watch?v=JgQh0UK20t4
