@@ -65,6 +65,7 @@ services:
     volumes:
       - shoutcast-control:/opt/shoutcast/control
       - shoutcast-data:/opt/shoutcast/library
+    command: ./config/sc_serv.conf
     deploy:
       << : *default_deployment
       labels:
