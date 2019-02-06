@@ -2,7 +2,7 @@ STACK_NAME		:= $(shell basename "$$(pwd)")
 DOMAINNAME		:= testnet.dapla.net
 VIRTUAL_HOST		:= radio.$(DOMAINNAME)
 ENVIRONMENT		:= production
-IMAGE_NAME		:= $(STACK_NAME):latest
+IMAGE_NAME		:= dallasmakerspace/livestream:latest
 
 export ENVIRONMENT 
 export IMAGE_NAME
