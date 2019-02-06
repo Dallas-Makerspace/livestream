@@ -65,18 +65,19 @@ services:
     volumes:
       - shoutcast-control:/opt/shoutcast/control
       - shoutcast-data:/opt/shoutcast/library
-    command: ./config/sc_serv.conf
     deploy:
       << : *default_deployment
       labels:
         << : *enable_paas
         traefik.enable: "true"
         traefik.listener.port: "8000"
-        traefik.listener.frontend.rule: "Host:${VIRTUAL_HOST}; Path:/radio"
+        traefik.listener.frontend.rule: "Host:${VIRTUAL_HOST},PathPrefixStrip:/listen"
         traefik.listener.frontend.priority: 10
+        traefik.listener.backend: "listener"
         traefik.streamer.port: "8001"
-        traefik.streamer.frontend.rule: "Host:${VIRTUAL_HOST}; Path:/dj"
+        traefik.streamer.frontend.rule: "Host:${VIRTUAL_HOST},PathPrefixStrip:/play"
         traefik.streamer.frontend.priority: 10
+        traefik.streamer.backend: "streamer"
 
 
   webfsoauthproxy:
