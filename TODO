@@ -1,0 +1,4 @@
+ - Resolve docker-compose.yml config not mounted in container on docker for windows
+ - Test on CommuntiyGrid
+ - Setup mpd and mpc containers
+ - Add rss feed parser / content container for webfs and mpd
