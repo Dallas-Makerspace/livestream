@@ -36,6 +36,11 @@ from here one can just use mpc to connect to the above mpd server for control of
 
 https://www.youtube.com/watch?v=JgQh0UK20t4
 
+
+## Configuration
+
+https://www.linode.com/docs/applications/media-servers/how-to-install-shoutcast-dnas-server-on-linux/
+
 # Upgrades
 
 - [1](https://hub.docker.com/r/vitiman/alpine-mpd/)
