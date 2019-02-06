@@ -64,7 +64,7 @@ services:
     << : *default_network
     volumes:
       - shoutcast-control:/opt/shoutcast/control
-      - shoutcast-config:/opt/shoutcast/config
+      - shoutcast-data:/opt/shoutcast/library
     deploy:
       << : *default_deployment
       labels:
@@ -111,7 +111,7 @@ services:
   webfs:
     image: pierrezemb/gostatic:latest
     volumes:
-      - shoutcast-control:/srv/http:ro
+      - shoutcast-data:/srv/http:ro
     << : *default_network
     hostname: "files.local"
     ports:
@@ -136,8 +136,8 @@ networks:
 
 volumes:
 
+    shoutcast-data: {}
     shoutcast-control: {}
-    shoutcast-config: {}
 
 ...
 # vim: set sts=2 ts=2 sw=2 ai et list number :

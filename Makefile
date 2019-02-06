@@ -1,8 +1,12 @@
+IMAGE_VERSION		:= $(shell git name-rev --tags --name-only $$(git rev-parse HEAD))
+BUILD_DATE		:= $(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
+VCS_REF			:= $(shell git rev-parse --short HEAD)
 STACK_NAME		:= $(shell basename "$$(pwd)")
+
 DOMAINNAME		:= testnet.dapla.net
 VIRTUAL_HOST		:= radio.$(DOMAINNAME)
 ENVIRONMENT		:= production
-IMAGE_NAME		:= dallasmakerspace/livestream:1.0.2
+IMAGE_NAME		:= dallasmakerspace/livestream:$(IMAGE_VERSION)
 
 export ENVIRONMENT 
 export IMAGE_NAME
@@ -24,7 +28,12 @@ deploy: image
 test: $(VIRTUAL_HOST)
 
 image:
-	@docker image build -t $(IMAGE_NAME) .
+	@echo "building version - $(IMAGE_VERSION)"
+	@docker image build \
+		--build-arg VCS_REF=$(VCS_REF) \
+		--build-arg BUILD_DATE=$(BUILD_DATE) \
+		--build-arg VERSION=$(IMAGE_VERSION) \
+		-t $(IMAGE_NAME) .
 
 $(VIRTUAL_HOST):
 	@curl -sSLk $@
