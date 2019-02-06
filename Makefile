@@ -18,7 +18,7 @@ clean:
 distclean: clean
 	@docker volume ls | awk '/$(STACK_NAME)/ { system("docker volume rm "$$2) }'
 
-deploy: deploy
+deploy: image
 	@docker stack deploy -c docker-compose.yml $(STACK_NAME)
 
 test: $(VIRTUAL_HOST)
