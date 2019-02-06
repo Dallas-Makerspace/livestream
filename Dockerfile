@@ -8,13 +8,12 @@ FROM alpine:latest
 
 WORKDIR /opt/shoutcast
 
-RUN mkdir -p control logs configs
+RUN mkdir -p control configs
 
 ADD http://download.nullsoft.com/shoutcast/tools/sc_serv2_linux_x64-latest.tar.gz  /opt/shoutcast
-COPY config/sc_serv.conf ./config
 
 #do not forget about /opt/shoutcast/sc_serv.conf
-VOLUME ["/opt/shoutcast/logs", "/opt/shoutcast/control", "/opt/shoutcast/config"]
+VOLUME ["/opt/shoutcast/control", "/opt/shoutcast/config"]
 
 EXPOSE 8000/tcp 8001/tcp
 
