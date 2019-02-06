@@ -50,7 +50,7 @@ x-platform-disable: &disable_paas
 services:
 
   streaming:
-    image: ${IMAGE}:latest
+    image: "${IMAGE_NAME}"
     hostname: "${VIRTUAL_HOST}"
     ports:
       - "8000/tcp"
