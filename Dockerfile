@@ -32,9 +32,7 @@ LABEL net.matrix.orgunit "Matrix NOC" \
       net.matrix.customer "PVT-01" \
       net.matrix.costcenter "INT-01" \
       net.matrix.oid "iso.org.dod.internet.42387" \
-      net.matrix.duns "iso.org.duns.039271257" \
-      
-
+      net.matrix.duns "iso.org.duns.039271257"
 
 WORKDIR /opt/shoutcast
 
