@@ -56,6 +56,26 @@ services:
       - "8000/tcp"
       - "8001/tcp"
     configs:
+      - source: sc_serv_basic.conf
+        target: /opt/shoutcast/config/sc_serv_basic.conf
+        uid: "0"
+        gid: "0"
+        mode: 0644
+      - source: sc_serv_public.conf
+        target: /opt/shoutcast/config/sc_serv_public.conf
+        uid: "0"
+        gid: "0"
+        mode: 0644
+      - source: sc_serv_relay.conf
+        target: /opt/shoutcast/config/sc_serv_relay.conf
+        uid: "0"
+        gid: "0"
+        mode: 0644
+      - source: sc_serv_simple.conf
+        target: /opt/shoutcast/config/sc_serv_simple.conf
+        uid: "0"
+        gid: "0"
+        mode: 0644
       - source: sc_serv.conf
         target: /opt/shoutcast/config/sc_serv.conf
         uid: "0"
@@ -65,20 +85,20 @@ services:
     volumes:
       - shoutcast-control:/opt/shoutcast/control
       - shoutcast-data:/opt/shoutcast/library
+    command: config/sc_serv_relay.conf
     deploy:
       << : *default_deployment
       labels:
         << : *enable_paas
         traefik.enable: "true"
-        traefik.listener.port: "8000"
-        traefik.listener.frontend.rule: "Host:${VIRTUAL_HOST},PathPrefixStrip:/listen"
-        traefik.listener.frontend.priority: 10
-        traefik.listener.backend: "listener"
-        traefik.streamer.port: "8001"
-        traefik.streamer.frontend.rule: "Host:${VIRTUAL_HOST},PathPrefixStrip:/play"
-        traefik.streamer.frontend.priority: 10
-        traefik.streamer.backend: "streamer"
-
+        traefik.port: "8000"
+        traefik.frontend.rule: "Host:${VIRTUAL_HOST}"
+        traefik.frontend.priority: 10
+        traefik.backend: "listener"
+        #traefik.streamer.port: "8001"
+        #traefik.streamer.frontend.rule: "Host:stream.${VIRTUAL_HOST}"
+        #traefik.streamer.frontend.priority: 10
+        #traefik.streamer.backend: "streamer"
 
   webfsoauthproxy:
     image: a5huynh/oauth2_proxy:latest
@@ -125,10 +145,21 @@ services:
       labels:
         << : *enable_paas
 
+#config/sc_serv_public.conf:7:1:include=sc_serv_basic.conf
+#config/sc_serv_relay.conf:8:1:include=config/sc_serv_public.conf
+
 configs:
 
   sc_serv.conf:
     file: "./config/sc_serv.conf"
+  sc_serv_public.conf:
+    file: "./config/sc_serv_public.conf"
+  sc_serv_simple.conf:
+    file: "./config/sc_serv_simple.conf"
+  sc_serv_basic.conf:
+    file: "./config/sc_serv_basic.conf"
+  sc_serv_relay.conf:
+    file: "./config/sc_serv_relay.conf"
 
 networks:
 
