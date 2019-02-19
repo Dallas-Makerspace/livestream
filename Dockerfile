@@ -38,6 +38,7 @@ WORKDIR /opt/shoutcast
 
 ## Resolves undocumented reversal of default behavior 
 ADD http://download.nullsoft.com/shoutcast/tools/sc_serv2_linux_x64-latest.tar.gz  /opt/shoutcast/
+COPY config/ /opt/shoutcast/config/
 RUN tar zxvf sc_serv2_linux_x64-latest.tar.gz && \
     rm sc_serv2_linux_x64-latest.tar.gz && \
     chmod +x sc_serv
@@ -48,5 +49,4 @@ VOLUME /opt/shoutcast/control
 EXPOSE 8000/tcp
 EXPOSE 8001/tcp
 
-ENTRYPOINT /opt/shoutcast/sc_serv
-CMD config/sc_serv.conf
+CMD ["./sc_serv", "config/sc_serv.conf"]

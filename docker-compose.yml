@@ -56,26 +56,6 @@ services:
       - "8000/tcp"
       - "8001/tcp"
     configs:
-      - source: sc_serv_basic.conf
-        target: /opt/shoutcast/config/sc_serv_basic.conf
-        uid: "0"
-        gid: "0"
-        mode: 0644
-      - source: sc_serv_public.conf
-        target: /opt/shoutcast/config/sc_serv_public.conf
-        uid: "0"
-        gid: "0"
-        mode: 0644
-      - source: sc_serv_relay.conf
-        target: /opt/shoutcast/config/sc_serv_relay.conf
-        uid: "0"
-        gid: "0"
-        mode: 0644
-      - source: sc_serv_simple.conf
-        target: /opt/shoutcast/config/sc_serv_simple.conf
-        uid: "0"
-        gid: "0"
-        mode: 0644
       - source: sc_serv.conf
         target: /opt/shoutcast/config/sc_serv.conf
         uid: "0"
@@ -85,7 +65,6 @@ services:
     volumes:
       - shoutcast-control:/opt/shoutcast/control
       - shoutcast-data:/opt/shoutcast/library
-    command: config/sc_serv_relay.conf
     deploy:
       << : *default_deployment
       labels:
