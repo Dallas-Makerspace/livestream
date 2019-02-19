@@ -1,3 +1,5 @@
  - Test on CommuntiyGrid
  - Setup mpd and mpc containers
  - Add rss feed parser / content container for webfs and mpd
+ - Add Station ID Audio
+ - Auto gen authhash for streams
