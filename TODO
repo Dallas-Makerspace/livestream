@@ -3,3 +3,4 @@
  - Add rss feed parser / content container for webfs and mpd
  - Add Station ID Audio
  - Auto gen authhash for streams
+ - Setup multi backend traefik labels (/listen for clients, /stream for media streamers)
