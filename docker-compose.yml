@@ -70,14 +70,14 @@ services:
       labels:
         << : *enable_paas
         traefik.enable: "true"
-        traefik.port: "8000"
-        traefik.frontend.rule: "Host:${VIRTUAL_HOST}"
-        traefik.frontend.priority: 10
-        traefik.backend: "listener"
-        #traefik.streamer.port: "8001"
-        #traefik.streamer.frontend.rule: "Host:stream.${VIRTUAL_HOST}"
-        #traefik.streamer.frontend.priority: 10
-        #traefik.streamer.backend: "streamer"
+        traefik.listener.port: "8000"
+        traefik.listener.frontend.rule: "Host:listen.${VIRTUAL_HOST}"
+        traefik.listener.frontend.priority: 10
+        traefik.listener.backend: "listener"
+        traefik.streamer.port: "8001"
+        traefik.streamer.frontend.rule: "Host:broadcast.${VIRTUAL_HOST}"
+        traefik.streamer.frontend.priority: 10
+        traefik.streamer.backend: "streamer"
 
   webfsoauthproxy:
     image: a5huynh/oauth2_proxy:latest
